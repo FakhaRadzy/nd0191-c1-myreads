@@ -52,7 +52,9 @@ function App() {
         />
         <Route
           path="/search"
-          element={<Search onMoveBook={moveBook} shelves={shelves} />}
+          element={
+            <Search onMoveBook={moveBook} shelves={shelves} books={books} />
+          }
         />
       </Routes>
     </div>

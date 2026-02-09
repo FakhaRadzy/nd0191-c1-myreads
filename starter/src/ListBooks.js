@@ -15,9 +15,11 @@ const ListBooks = ({ book, onMoveBook, shelves }) => {
           ></div>
           <div className="book-shelf-changer">
             <select
-              value={book.shelf}
+              value={book.shelf || "none"}
               onChange={(e) => onMoveBook(book, e.target.value)}
             >
+              <option value="none">None</option>
+
               {shelves.map((shelf) => {
                 return (
                   <option key={shelf.id} value={shelf.id}>
@@ -36,7 +38,7 @@ const ListBooks = ({ book, onMoveBook, shelves }) => {
 };
 
 ListBooks.propTypes = {
-  book: PropTypes.string.isRequired,
+  book: PropTypes.object.isRequired,
   onMoveBook: PropTypes.func.isRequired,
   shelves: PropTypes.array.isRequired,
 };

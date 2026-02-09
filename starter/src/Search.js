@@ -4,7 +4,7 @@ import SearchResults from "./SearchResults";
 import * as BooksAPI from "./BooksAPI";
 import PropTypes from "prop-types";
 
-const Search = ({ onMoveBook, shelves }) => {
+const Search = ({ onMoveBook, shelves, books }) => {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -13,10 +13,12 @@ const Search = ({ onMoveBook, shelves }) => {
     const searchBook = async () => {
       if (query.trim()) {
         const res = await BooksAPI.search(query.trim(), 20);
-        if (res && !res.error) {
-          if (isActive) {
-            setSearchResults(res);
-          }
+        if (res && !res.error && isActive) {
+          const updatedResults = res.map((searchResult) => {
+            const existingBook = books.find((b) => b.id === searchResult.id);
+            return existingBook ? existingBook : searchResult;
+          });
+          setSearchResults(updatedResults);
         } else {
           setSearchResults([]);
         }
@@ -29,7 +31,7 @@ const Search = ({ onMoveBook, shelves }) => {
     return () => {
       isActive = false;
     };
-  }, [query]);
+  }, [query, books]);
 
   return (
     <div className="search-books">
